@@ -15,7 +15,6 @@ class MovieController extends Controller
     {
         //GET: /api/movies	returns all movies
         return response()->json(Movie::all());
-            //return MovieResource::collection(Movie::all());
     }
 
     /**
@@ -26,10 +25,9 @@ class MovieController extends Controller
         //POST: /api/movies	creates a new movie with optional genres
         $movie = Movie::create([
             'title' => $request->title,
-            'release_year' => $request->release_year,
+            'release_year' => $request->release_year
         ]);
 
-        //if(isset($request['genres'])){
         if ($request->has('genre_ids')){
             $movie->genres()->attach($request['genre_ids']);
         }
@@ -44,8 +42,6 @@ class MovieController extends Controller
     public function show(int $id)
     {
         //GET: /api/movies/{id}	returns a single movie including genre names
-            //$movie = Movie::findOrFail($id);
-            //return response()->json($movie);
         return new MovieResource(Movie::with('genres')->findOrFail($id));
     }
 
@@ -61,7 +57,6 @@ class MovieController extends Controller
             'release_year' => $request->release_year,
         ]);
 
-        //if(isset($request['genres'])){
         if ($request->has('genre_ids')){
             $movie->genres()->sync($request['genre_ids']);
         }
